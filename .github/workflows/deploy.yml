@@ -1,5 +1,7 @@
 name: Deployed to gh-pages
-on: [push]
+on:
+  push:
+    branches: [ main ]
 
 jobs:
   build:
@@ -28,7 +30,7 @@ jobs:
         run: npm run build
 
       - name: Push to gh-pages
-        if: github.event_name == 'push' && (startsWith(github.event.ref, 'refs/tags/') || github.event.ref == 'refs/heads/publish')
+        if: github.event_name == 'push'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PUBLISH_DIR: public
@@ -42,5 +44,5 @@ jobs:
           touch .nojekyll
           git add .
           git status
-          git commit -m "Push to gh-pages"
+          git commit -m "actions build"
           git push -f https://$GITHUB_ACTOR:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:$BRANCH
