@@ -33,7 +33,7 @@ jobs:
         if: github.event_name == 'push'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_DIR: public
+          PUBLISH_DIR: dist
           BRANCH: gh-pages
         run: |
           cd $PUBLISH_DIR
