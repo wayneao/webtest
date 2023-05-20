@@ -2,9 +2,12 @@ name: Deployed to gh-pages
 on: [push]
 
 jobs:
-  install:
+  build:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
     strategy:
       matrix:
         node-version: [18.x]
@@ -23,3 +26,21 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Push to gh-pages
+        if: github.event_name == 'push' && (startsWith(github.event.ref, 'refs/tags/') || github.event.ref == 'refs/heads/publish')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_DIR: public
+          BRANCH: gh-pages
+        run: |
+          cd $PUBLISH_DIR
+          ls -l
+          git init
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@noreply.github.com"
+          touch .nojekyll
+          git add .
+          git status
+          git commit -m "Push to gh-pages"
+          git push -f https://$GITHUB_ACTOR:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:$BRANCH
