@@ -1,85 +1,55 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView } from 'vue-router'
+import Menu from './components/Menu.vue'
+import { darkTheme, lightTheme } from 'naive-ui'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <n-config-provider :theme="lightTheme">
+    <n-global-style />
+    <n-message-provider>
+      <content />
+    </n-message-provider>
+    <n-layout>
+      <n-layout-header id="header" bordered>
+        <Menu />
+      </n-layout-header>
+      <n-layout-content class="content">
+        <RouterView />
+      </n-layout-content>
+    </n-layout>
+    <n-watermark
+      content="仅供测试用途@neko"
+      cross
+      fullscreen
+      :font-size="16"
+      :line-height="18"
+      :width="384"
+      :height="384"
+      :x-offset="12"
+      :y-offset="128"
+      :rotate="-15"
+    />
+  </n-config-provider>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+#header {
+  display: flex;
+  justify-content: center;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.content {
+  padding: 2rem;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+.fullscreen-layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.fullscreen-items {
+  flex: 1 0 auto;
 }
 </style>
